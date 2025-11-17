@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.29)
 
 project(staticshock LANGUAGES C)
 
+add_subdirectory("markymark")
+
 set(CMAKE_C_STANDARD 23)
 file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.c")
 file(GLOB_RECURSE MY_HEADERS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")

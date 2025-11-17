@@ -2,4 +2,4 @@
 
 cd build-xcode
 cmake .. -GXcode
-open markymark.xcodeproj
+open staticshock.xcodeproj

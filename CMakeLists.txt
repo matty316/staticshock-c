@@ -8,7 +8,7 @@ set(CMAKE_C_STANDARD 23)
 file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.c")
 file(GLOB_RECURSE MY_HEADERS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
 
-add_executable(staticshock "${CMAKE_CURRENT_SOURCE_DIR}/src/main.c")
+add_executable(staticshock ${MY_SOURCES} ${MY_HEADERS})
 
 target_include_directories(staticshock PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 

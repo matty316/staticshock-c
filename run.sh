@@ -3,4 +3,4 @@
 cd build
 cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=1
 make
-./markymark ../$1
+./staticshock ../$1

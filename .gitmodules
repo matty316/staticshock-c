@@ -1,0 +1,3 @@
+[submodule "markymark"]
+	path = markymark
+	url = git@github.com:matty316/markymark-c.git

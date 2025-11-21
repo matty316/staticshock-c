@@ -19,9 +19,9 @@ struct Generator {
 char *get_subdirectory_path(const char *dir_path, const char *path) {
   size_t input_len = strlen(dir_path);
   size_t path_len = strlen(path);
-  size_t total_len = input_len + path_len + 1;
+  size_t total_len = input_len + path_len + 2;
   char *string = (char *)malloc(sizeof(char) * total_len);
-  sprintf(string, "%s/%s", dir_path, path);
+  snprintf(string, total_len, "%s/%s", dir_path, path);
   return string;
 }
 

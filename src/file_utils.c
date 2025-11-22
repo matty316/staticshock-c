@@ -6,7 +6,6 @@
 #include <string.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#include <stdbool.h>
 #include <unistd.h>
 
 void remove_dir(const char *path) {
@@ -83,7 +82,7 @@ void copy_file(const char *src_path, const char *dest_path) {
   size_t bytesRead = fread(buffer, sizeof(char), fileSize, src);
   buffer[bytesRead] = '\0';
 
-  FILE *dest = fopen(dest_path, "wb");
+  FILE *dest = fopen(dest_path, "ab");
 
   if (dest == NULL) {
     printf("cannot open file: %s", dest_path);

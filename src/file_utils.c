@@ -6,6 +6,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <stdbool.h>
 #include <unistd.h>
 
 void remove_dir(const char *path) {
@@ -65,6 +66,8 @@ void create_dir(const char *path) {
 }
 
 void copy_file(const char *src_path, const char *dest_path) {
+  printf("copying file: %s\n", src_path);
+
   FILE* src = fopen(src_path, "rb");
 
   if (src == NULL) {
@@ -94,7 +97,16 @@ void copy_file(const char *src_path, const char *dest_path) {
   free(buffer);
 }
 
-void copy_files_from_dir(const char *src_path, const char *dest_path) {
+bool has_extension(const char *path, const char *ext) {
+  if (ext == NULL) return true;
+
+  size_t path_len = strlen(path);
+  size_t ext_len = strlen(ext);
+
+  return strncmp(&path[path_len - ext_len], ext, ext_len) == 0;
+}
+
+void copy_files_from_dir(const char *src_path, const char *dest_path, const char *ext) {
   DIR *src_dir = opendir(src_path);
   if (src_dir == NULL) {
     printf("cannot open directory: %s", src_path);
@@ -104,7 +116,7 @@ void copy_files_from_dir(const char *src_path, const char *dest_path) {
   struct dirent *entry;
   while ((entry = readdir(src_dir)) != NULL) {
     const char* name = entry->d_name;
-    if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0)
+    if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0 || !has_extension(name, ext))
       continue;
 
     size_t src_len = strlen(src_path) + strlen(name) + 2;

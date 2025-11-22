@@ -23,6 +23,8 @@ a static site generator written in ~~swift~~ c
 |   | css files
 |
 |__ js
-    | js files     
+|   | js files    
+|
+|__ img
+    | image files
 ```
-

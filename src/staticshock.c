@@ -14,6 +14,8 @@ struct Generator {
   char *css_path;
   char *css_output_path;
   char *posts_path;
+  char *img_path;
+  char *img_output_path;
 } gen;
 
 char *get_subdirectory_path(const char *dir_path, const char *path) {
@@ -31,6 +33,8 @@ void free_gen() {
   free(gen.css_path);
   free(gen.css_output_path);
   free(gen.posts_path);
+  free(gen.img_path);
+  free(gen.img_output_path);
 }
 
 void create_paths(const char *input_path, const char *output_path) {
@@ -41,6 +45,8 @@ void create_paths(const char *input_path, const char *output_path) {
   gen.css_path = get_subdirectory_path(gen.input_path, "css");
   gen.css_output_path = get_subdirectory_path(gen.output_path, "css");
   gen.posts_path = get_subdirectory_path(gen.input_path, "posts");
+  gen.img_path = get_subdirectory_path(gen.input_path, "img");
+  gen.img_output_path = get_subdirectory_path(gen.output_path, "img");
 }
 
 void create_output_dir() {
@@ -48,14 +54,16 @@ void create_output_dir() {
   create_dir(gen.output_path);
   create_dir(gen.js_output_path);
   create_dir(gen.css_output_path);
+  create_dir(gen.img_output_path);
 }
 
 void generate(const char *input_path, const char *output_path) {
   create_paths(input_path, output_path);
   create_output_dir();
 
-  copy_files_from_dir(gen.css_path, gen.css_output_path);
-  copy_files_from_dir(gen.js_path, gen.js_output_path);
+  copy_files_from_dir(gen.css_path, gen.css_output_path, ".css");
+  copy_files_from_dir(gen.js_path, gen.js_output_path, ".js");
+  copy_files_from_dir(gen.img_path, gen.img_output_path, NULL);
 
   free_gen();
 }

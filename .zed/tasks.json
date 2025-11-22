@@ -14,5 +14,18 @@
     "shell": "system",
     "show_summary": true,
     "show_command": true
+  },
+  {
+    "label": "valgrind",
+    "command": "cmake --build build && valgrind ./build/staticshock",
+    "args": ["website", "site"],
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "never",
+    "shell": "system",
+    "show_summary": true,
+    "show_command": true
   }
 ]

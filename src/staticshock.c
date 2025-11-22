@@ -53,6 +53,9 @@ void create_output_dir() {
 void generate(const char *input_path, const char *output_path) {
   create_paths(input_path, output_path);
   create_output_dir();
-  
+
+  copy_files_from_dir(gen.css_path, gen.css_output_path);
+  copy_files_from_dir(gen.js_path, gen.js_output_path);
+
   free_gen();
 }

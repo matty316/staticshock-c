@@ -114,6 +114,7 @@ void process_markdown(const char* src, const char* dest) {
   fclose(file);
   const char *html = mm_parse(buffer, NULL);
   append_to_file(html, dest);
+  mm_free();
   free(buffer);
 }
 
@@ -179,5 +180,4 @@ void generate(const char *input_path, const char *output_path) {
   build_markdown_pages();
 
   free_gen();
-  mm_free();
 }

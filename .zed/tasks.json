@@ -1,6 +1,5 @@
 // Project tasks configuration. See https://zed.dev/docs/tasks for documentation.
 //
-// Example:
 [
   {
     "label": "build and run",
@@ -19,6 +18,32 @@
     "label": "valgrind",
     "command": "cmake --build build && valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all ./build/staticshock",
     "args": ["website", "site"],
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "never",
+    "shell": "system",
+    "show_summary": true,
+    "show_command": true
+  },
+  {
+    "label": "build and run markymark",
+    "command": "cd markymark && cmake --build build && ./build/markymark",
+    "args": ["test.md", "index.html"],
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "never",
+    "shell": "system",
+    "show_summary": true,
+    "show_command": true
+  },
+  {
+    "label": "valgrind markymark",
+    "command": "cd markymark && cmake --build build && valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all ./build/markymark",
+    "args": ["test.md", "index.html"],
     "use_new_terminal": false,
     "allow_concurrent_runs": false,
     "reveal": "always",

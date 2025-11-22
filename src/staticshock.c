@@ -2,6 +2,8 @@
 
 #include "file_utils.h"
 
+#include <markymark.h>
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -38,6 +40,8 @@ void free_gen() {
   free(gen.posts_path);
   free(gen.img_path);
   free(gen.img_output_path);
+  free(gen.header_path);
+  free(gen.footer_path);
 }
 
 void create_paths(const char *input_path, const char *output_path) {
@@ -92,6 +96,77 @@ void build_html_pages() {
     closedir(dir);
 }
 
+void process_markdown(const char* src, const char* dest) {
+  FILE *file = fopen(src, "rb");
+  if (file == NULL) {
+    printf("unable to open markdown file: %s\n", src);
+    exit(EXIT_FAILURE);
+  }
+
+  fseek(file, 0L, SEEK_END);
+  size_t fileSize = ftell(file);
+  rewind(file);
+
+  char* buffer = (char*)malloc(fileSize + 1);
+  size_t bytesRead = fread(buffer, sizeof(char), fileSize, file);
+  buffer[bytesRead] = '\0';
+
+  fclose(file);
+  const char *html = mm_parse(buffer, NULL);
+  append_to_file(html, dest);
+  free(buffer);
+}
+
+void change_file_extension(const char *old_name, const char *new_extension) {
+  char new_name[1024];
+  strcpy(new_name, old_name);
+
+  char *dot = strrchr(new_name, '.');
+  if (dot != NULL) {
+    *dot = '\0';
+  }
+
+  strcat(new_name, ".");
+  strcat(new_name, new_extension);
+
+  if (rename(old_name, new_name) != 0) {
+    perror("Failed to rename file");
+  } else {
+    printf("File renamed successfully from %s to %s\n", old_name, new_name);
+  }
+}
+
+void build_markdown_pages() {
+    DIR *dir = opendir(gen.input_path);
+    if (dir == NULL) {
+      printf("cannot open directory: %s", gen.input_path);
+      exit(EXIT_FAILURE);
+    }
+
+    struct dirent *entry;
+    while ((entry = readdir(dir)) != NULL) {
+      const char* name = entry->d_name;
+      if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0 || !has_extension(name, ".md"))
+        continue;
+
+      size_t src_len = strlen(gen.input_path) + strlen(name) + 2;
+      size_t dest_len = strlen(gen.output_path) + strlen(name) + 2;
+
+      char src_file_path[src_len];
+      char dest_file_path[dest_len];
+
+      snprintf(src_file_path, src_len, "%s/%s", gen.input_path, name);
+      snprintf(dest_file_path, dest_len, "%s/%s", gen.output_path, name);
+
+      copy_file(gen.header_path, dest_file_path);
+      process_markdown(src_file_path, dest_file_path);
+      copy_file(gen.footer_path, dest_file_path);
+      change_file_extension(dest_file_path, "html");
+    }
+
+    closedir(dir);
+}
+
 void generate(const char *input_path, const char *output_path) {
   create_paths(input_path, output_path);
   create_output_dir();
@@ -101,6 +176,8 @@ void generate(const char *input_path, const char *output_path) {
   copy_files_from_dir(gen.img_path, gen.img_output_path, NULL);
 
   build_html_pages();
+  build_markdown_pages();
 
   free_gen();
+  mm_free();
 }

@@ -96,6 +96,20 @@ void copy_file(const char *src_path, const char *dest_path) {
   free(buffer);
 }
 
+void append_to_file(const char *string, const char *dest_path) {
+  FILE *dest = fopen(dest_path, "ab");
+  size_t str_len = strlen(string);
+
+  if (dest == NULL) {
+    printf("cannot open file: %s", dest_path);
+    exit(EXIT_FAILURE);
+  }
+
+  fwrite(string, sizeof(char), str_len, dest);
+
+  fclose(dest);
+}
+
 bool has_extension(const char *path, const char *ext) {
   if (ext == NULL) return true;
 

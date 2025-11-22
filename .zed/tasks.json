@@ -17,7 +17,7 @@
   },
   {
     "label": "valgrind",
-    "command": "cmake --build build && valgrind ./build/staticshock",
+    "command": "cmake --build build && valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all ./build/staticshock",
     "args": ["website", "site"],
     "use_new_terminal": false,
     "allow_concurrent_runs": false,

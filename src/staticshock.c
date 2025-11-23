@@ -1,6 +1,7 @@
 #include "staticshock.h"
 
 #include "file_utils.h"
+#include "template.h"
 
 #include <markymark.h>
 
@@ -91,6 +92,8 @@ void build_html_pages() {
       copy_file(gen.header_path, dest_file_path);
       copy_file(src_file_path, dest_file_path);
       copy_file(gen.footer_path, dest_file_path);
+
+      template_file(dest_file_path, gen.output_path);
     }
 
     closedir(dir);
@@ -119,7 +122,7 @@ void process_markdown(const char* src, const char* dest) {
 }
 
 void change_file_extension(const char *old_name, const char *new_extension) {
-  char new_name[1024];
+  char new_name[1024]; //TODO: generate actual length
   strcpy(new_name, old_name);
 
   char *dot = strrchr(new_name, '.');
@@ -163,6 +166,8 @@ void build_markdown_pages() {
       process_markdown(src_file_path, dest_file_path);
       copy_file(gen.footer_path, dest_file_path);
       change_file_extension(dest_file_path, "html");
+
+      template_file(dest_file_path, gen.output_path);
     }
 
     closedir(dir);

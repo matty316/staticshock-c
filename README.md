@@ -4,7 +4,7 @@ a static site generator written in ~~swift~~ c
 
 ## usage
 
-`$ staticshock folder`
+`$ staticshock <input_dir> <output_dir>`
 
 ### project structure
 
